@@ -1,0 +1,28 @@
+{
+  "name": "@meet-point/server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@meet-point/shared": "workspace:*",
+    "@nestjs/common": "^11",
+    "@nestjs/core": "^11",
+    "@nestjs/platform-express": "^11",
+    "reflect-metadata": "^0.2",
+    "rxjs": "^7"
+  },
+  "devDependencies": {
+    "@meet-point/config": "workspace:*",
+    "@nestjs/cli": "^11",
+    "@types/node": "^20",
+    "eslint": "^9",
+    "eslint-plugin-turbo": "^2",
+    "typescript": "^5",
+    "typescript-eslint": "^8"
+  }
+}
