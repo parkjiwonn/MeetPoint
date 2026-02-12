@@ -1,0 +1,62 @@
+:root {
+  /* 기본 배경/텍스트 */
+  --background: var(--color-neutral-50);
+  --foreground: var(--color-neutral-950);
+
+  /* 카드 */
+  --card: #ffffff;
+  --card-foreground: var(--color-neutral-950);
+
+  /* Primary — 메인 버튼, CTA, 링크 */
+  --primary: var(--color-primary-600);
+  --primary-foreground: #ffffff;
+
+  /* Secondary — 보조 버튼, 태그, 배지 */
+  --secondary: var(--color-secondary-100);
+  --secondary-foreground: var(--color-secondary-900);
+
+  /* Muted — 비활성 텍스트, 보조 설명 */
+  --muted: var(--color-neutral-100);
+  --muted-foreground: var(--color-neutral-500);
+
+  /* Accent — 호버, 선택된 항목 배경 */
+  --accent: var(--color-neutral-100);
+  --accent-foreground: var(--color-neutral-900);
+
+  /* Destructive — 삭제, 에러 */
+  --destructive: var(--color-error-600);
+  --destructive-foreground: var(--color-error-600);
+
+  /* 보더, 인풋, 포커스 링 */
+  --border: var(--color-neutral-200);
+  --input: var(--color-neutral-200);
+  --ring: var(--color-primary-500);
+
+  /* 라운딩 */
+  --radius: 0.625rem;
+}
+
+/* shadcn 시맨틱 변수 → Tailwind 유틸리티 매핑 */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
