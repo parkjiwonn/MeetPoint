@@ -1,26 +1,19 @@
 "use client";
 
-import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, User } from "lucide-react";
 import { Button, Input, Label } from "@meet-point/ui";
 import { api } from "../../lib/api";
 import type { AuthResponse } from "@meet-point/shared";
 
-export default function LoginPage() {
-  return (
-    <Suspense>
-      <LoginForm />
-    </Suspense>
-  );
-}
-
-function LoginForm() {
+export default function SignupPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -28,17 +21,27 @@ function LoginForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (password !== confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다");
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("비밀번호는 8자 이상이어야 합니다");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
-      await api<AuthResponse>("/auth/login", {
+      await api<AuthResponse>("/auth/signup", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, name }),
       });
-      const redirect = searchParams.get("redirect") ?? "/";
-      router.push(redirect);
+      router.push("/");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "로그인에 실패했습니다");
+      setError(err instanceof Error ? err.message : "회원가입에 실패했습니다");
     } finally {
       setIsLoading(false);
     }
@@ -46,11 +49,10 @@ function LoginForm() {
 
   return (
     <div className="flex min-h-screen flex-col justify-center px-lg">
-      {/* 헤더 */}
       <div className="mb-xl">
-        <h1 className="text-2xl font-bold">로그인</h1>
+        <h1 className="text-2xl font-bold">회원가입</h1>
         <p className="mt-sm text-sm text-muted-foreground">
-          이메일과 비밀번호로 로그인하세요
+          새 계정을 만들어 시작하세요
         </p>
       </div>
 
@@ -60,6 +62,23 @@ function LoginForm() {
             {error}
           </div>
         )}
+
+        {/* 이름 */}
+        <div className="flex flex-col gap-sm">
+          <Label htmlFor="name">이름</Label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              id="name"
+              type="text"
+              placeholder="이름을 입력하세요"
+              className="pl-10"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+          </div>
+        </div>
 
         {/* 이메일 */}
         <div className="flex flex-col gap-sm">
@@ -86,11 +105,12 @@ function LoginForm() {
             <Input
               id="password"
               type={showPassword ? "text" : "password"}
-              placeholder="비밀번호를 입력하세요"
+              placeholder="8자 이상 입력하세요"
               className="pl-10 pr-10"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={8}
             />
             <button
               type="button"
@@ -106,15 +126,32 @@ function LoginForm() {
           </div>
         </div>
 
-        {/* 로그인 버튼 */}
+        {/* 비밀번호 확인 */}
+        <div className="flex flex-col gap-sm">
+          <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              id="confirmPassword"
+              type={showPassword ? "text" : "password"}
+              placeholder="비밀번호를 다시 입력하세요"
+              className="pl-10"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              minLength={8}
+            />
+          </div>
+        </div>
+
         <Button type="submit" className="mt-sm w-full" disabled={isLoading}>
-          {isLoading ? "로그인 중..." : "로그인"}
+          {isLoading ? "가입 중..." : "회원가입"}
         </Button>
 
         <p className="text-center text-sm text-muted-foreground">
-          계정이 없으신가요?{" "}
-          <Link href="/signup" className="text-primary font-medium underline">
-            회원가입
+          이미 계정이 있으신가요?{" "}
+          <Link href="/login" className="text-primary font-medium underline">
+            로그인
           </Link>
         </p>
       </form>
