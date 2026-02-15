@@ -16,7 +16,7 @@ export type Database = PostgresJsDatabase<typeof schema>;
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const databaseUrl = configService.get<string>("DATABASE_URL")!;
-        const client = postgres(databaseUrl);
+        const client = postgres(databaseUrl, { prepare: false });
         return drizzle(client, { schema });
       },
     },
